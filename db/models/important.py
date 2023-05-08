@@ -1,7 +1,6 @@
 from db.base_class import Base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from datetime import datetime
 
 
 class Important(Base):
