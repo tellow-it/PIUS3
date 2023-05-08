@@ -14,7 +14,7 @@ router = InferringRouter()
 
 
 @cbv(router)
-class Task:
+class TaskController:
     db: Session = Depends(get_db)
 
     @router.get('/', status_code=status.HTTP_200_OK)

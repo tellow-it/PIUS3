@@ -13,7 +13,7 @@ router = InferringRouter()
 
 
 @cbv(router)
-class Important:
+class ImportantController:
     db: Session = Depends(get_db)
 
     @router.get('/', status_code=status.HTTP_200_OK)
