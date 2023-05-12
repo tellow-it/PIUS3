@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from starlette import status
 
-from schemas.task import ShowTask, TaskSchema
+from schemas.task import ShowTask, TaskSchema, TaskStatusSchema
 from schemas.base_schema import Response
 from db.session import get_db
 from db.repository.tasks import TaskCRUD
@@ -27,11 +27,12 @@ class TaskController:
 
     @router.get('/{task_id}', status_code=status.HTTP_200_OK)
     async def get_task_by_id(self, task_id: int) -> Response:
-        try:
-            task_obj = TaskCRUD.get_task_by_id(task_id=task_id, db=self.db)
+        task_obj = TaskCRUD.get_task_by_id(task_id=task_id, db=self.db)
+        if task_obj is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task doesn't exist")
+        else:
             return Response(status_code=200, message=f'Success get category: {task_id}', data=task_obj)
-        except Exception as err:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
+
 
     @router.post("/create", status_code=status.HTTP_201_CREATED)
     async def create_task(self, task: TaskSchema) -> Response:
@@ -46,6 +47,14 @@ class TaskController:
         try:
             task_obj = TaskCRUD.update_task(task=task, db=self.db)
             return Response(status_code=200, message=f'Success update: {task.id}', data=task_obj)
+        except Exception as err:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
+
+    @router.patch('/update_status', status_code=status.HTTP_200_OK)
+    async def update_status_task(self, task_status: TaskStatusSchema) -> Response:
+        try:
+            task_obj = TaskCRUD.update_status_task(task_status=task_status, db=self.db)
+            return Response(status_code=200, message=f'Success update: {task_status.id}', data=task_obj)
         except Exception as err:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
 

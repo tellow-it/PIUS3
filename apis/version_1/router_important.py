@@ -26,11 +26,10 @@ class ImportantController:
 
     @router.get('/{important_id}', status_code=status.HTTP_200_OK)
     async def get_important_by_id(self, important_id: int) -> Response:
-        try:
-            important_obj = ImportantCRUD.get_important_by_id(important_id=important_id, db=self.db)
-            return Response(status_code=200, message=f'Success get category: {important_id}', data=important_obj)
-        except Exception as err:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
+        important_obj = ImportantCRUD.get_important_by_id(important_id=important_id, db=self.db)
+        if important_obj is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Important doesn't exist")
+        return Response(status_code=200, message=f'Success get category: {important_id}', data=important_obj)
 
     @router.post("/create", status_code=status.HTTP_201_CREATED)
     async def create_new_important(self, important: ImportantSchema) -> Response:

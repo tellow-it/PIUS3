@@ -28,17 +28,17 @@ class CategoryController:
 
     @router.get('/{category_id}', status_code=status.HTTP_200_OK)
     async def get_category_by_id(self, category_id: int) -> Response:
-        try:
-            category_obj = CategoryCRUD.get_category_by_id(category_id=category_id, db=self.db)
+        category_obj = CategoryCRUD.get_category_by_id(category_id=category_id, db=self.db)
+        if category_obj is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category doesn't exist")
+        else:
             return Response(status_code=200, message=f'Success get category: {category_id}', data=category_obj)
-        except Exception as err:
-            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
 
     @router.post("/create", status_code=status.HTTP_201_CREATED)
     async def create_category(self, category: CategorySchema) -> Response:
         try:
             category_obj = CategoryCRUD.create_category(category=category, db=self.db)
-            return Response(status_code=200, message='Success create category', data=category_obj)
+            return Response(status_code=201, message='Success create category', data=category_obj)
         except Exception as err:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(err))
 

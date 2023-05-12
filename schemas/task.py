@@ -13,6 +13,11 @@ class TaskSchema(BaseModel):
     important_id: int
 
 
+class TaskStatusSchema(BaseModel):
+    id: int
+    status: bool
+
+
 class ShowTask(TaskSchema):
     id: int
 

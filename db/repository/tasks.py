@@ -1,5 +1,5 @@
 from typing import List
-from schemas.task import TaskSchema, ShowTask
+from schemas.task import TaskSchema, ShowTask, TaskStatusSchema
 from db.models.tasks import Task
 from sqlalchemy.orm import Session
 
@@ -39,6 +39,14 @@ class TaskCRUD:
         _task.important_id = task.important_id
         _task.date_create = task.date_create
 
+        db.commit()
+        db.refresh(_task)
+        return _task
+
+    @classmethod
+    def update_status_task(cls, task_status: TaskStatusSchema, db: Session) -> ShowTask:
+        _task: ShowTask = TaskCRUD.get_task_by_id(task_id=task_status.id, db=db)
+        _task.status = task_status.status
         db.commit()
         db.refresh(_task)
         return _task
