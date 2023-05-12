@@ -6,7 +6,7 @@ load_dotenv()
 
 class Settings:
 
-    PROJECT_NAME: str = 'PIUS2'
+    PROJECT_NAME: str = 'To-Do API PIUS3'
     PROJECT_VERSION: str = '1.0.0'
 
     POSTGRES_USER: str = os.getenv("POSTGRES_USER")
