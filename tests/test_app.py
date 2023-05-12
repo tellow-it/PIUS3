@@ -36,8 +36,8 @@ def test_get_important():
 
 def test_get_important_by_id():
     response = client.get("/v1/important/500")
-    assert response.status_code == 200
-    assert response.json()['data'] is None
+    assert response.status_code == 404
+
 
 
 def test_create_exist_important():
@@ -71,8 +71,7 @@ def test_get_categories():
 
 def test_get_category_by_id():
     response = client.get("/v1/categories/500")
-    assert response.status_code == 200
-    assert response.json()['data'] is None
+    assert response.status_code == 404
 
 
 def test_create_category():
@@ -108,8 +107,7 @@ def test_get_tasks():
 
 def test_get_task_by_id():
     response = client.get("/v1/tasks/500")
-    assert response.status_code == 200
-    assert response.json()['data'] is None
+    assert response.status_code == 404
 
 
 def test_create_task():
